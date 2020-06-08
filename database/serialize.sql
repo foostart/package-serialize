@@ -25,30 +25,32 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `perializes`
+-- Table structure for table `serializes`
 --
 
-DROP TABLE IF EXISTS `perializes`;
-CREATE TABLE IF NOT EXISTS `perializes` (
-  `perialize_id` int(11) NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `serializes`;
+CREATE TABLE IF NOT EXISTS `serializes` (
+  `serialize_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `user_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user_full_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
+  `serial_topic_id` int(11) DEFAULT 0,
+  `sequence` int(11) DEFAULT 0,
   `slideshow_id` int(11) DEFAULT NULL,
-  `perialize_name` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
-  `perialize_slug` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `perialize_overview` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `perialize_description` longtext COLLATE utf8_unicode_ci,
-  `perialize_image` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `perialize_files` varchar(10000) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `perialize_status` tinyint(4) DEFAULT NULL,
+  `serialize_name` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
+  `serialize_slug` varchar(500) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `serialize_overview` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `serialize_description` longtext COLLATE utf8_unicode_ci,
+  `serialize_image` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `serialize_files` varchar(10000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `serialize_status` tinyint(4) DEFAULT NULL,
   `cache_comments` text COLLATE utf8_unicode_ci,
-  `cache_other_perializes` text COLLATE utf8_unicode_ci,
+  `cache_other_serializes` text COLLATE utf8_unicode_ci,
   `cache_time` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`perialize_id`)
+  PRIMARY KEY (`serialize_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 COMMIT;
 

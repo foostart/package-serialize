@@ -6,11 +6,11 @@
     </div>
     <div class="panel-body">
 
-        {!! Form::open(['route' => 'perializes.list','method' => 'get']) !!}
+        {!! Form::open(['route' => 'serialize.list','method' => 'get']) !!}
 
             <!--BUTTONS-->
             <div class="form-group">
-                <a href="{!! URL::route('perializes.list', ['context' => @$params['context']]) !!}" class="btn btn-default search-reset">
+                <a href="{!! URL::route('serialize.list', ['context' => @$params['context']]) !!}" class="btn btn-default search-reset">
                     {!! trans($plang_admin.'.buttons.reset') !!}
                 </a>
                 {!! Form::submit(trans($plang_admin.'.buttons.search').'', ["class" => "btn btn-info", 'id' => 'search-submit']) !!}
@@ -39,7 +39,15 @@
                 'items' => $categories,
             ])
 
-            <!--SORTING-->
+        <!-- CATEGORIES -->
+        @include('package-category::admin.partials.select_single', [
+            'name' => 'serial_topic',
+            'label' => trans($plang_admin.'.labels.serial'),
+            'value' => @$params['serial_topic'],
+            'items' => $serials,
+        ])
+
+        <!--SORTING-->
             @include('package-category::admin.partials.sorting')
 
             <div class='hidden-field'>

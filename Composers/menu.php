@@ -36,18 +36,18 @@ View::composer([
         $plang_front = 'serialize-front';
 
         $fooCategory = new FooCategory();
-        $key = $fooCategory->getContextKeyByRef('admin/perializes');
+        $key = $fooCategory->getContextKeyByRef('admin/serialize');
 
         /**
          * $sidebar_items
          */
         $sidebar_items = [
             trans('serialize-admin.sidebar.add') => [
-                'url' => URL::route('perializes.edit', []),
+                'url' => URL::route('serialize.edit', []),
                 'icon' => '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>'
             ],
             trans('serialize-admin.sidebar.list') => [
-                "url" => URL::route('perializes.list', []),
+                "url" => URL::route('serialize.list', []),
                 'icon' => '<i class="fa fa-list-ul" aria-hidden="true"></i>'
             ],
             trans('serialize-admin.sidebar.category') => [
@@ -55,11 +55,11 @@ View::composer([
                 'icon' => '<i class="fa fa-sitemap" aria-hidden="true"></i>'
             ],
             trans('serialize-admin.sidebar.config') => [
-                "url" => URL::route('perializes.config', []),
+                "url" => URL::route('serialize.config', []),
                 'icon' => '<i class="fa fa-braille" aria-hidden="true"></i>'
             ],
             trans('serialize-admin.sidebar.lang') => [
-                "url" => URL::route('perializes.lang', []),
+                "url" => URL::route('serialize.lang', []),
                 'icon' => '<i class="fa fa-language" aria-hidden="true"></i>'
             ],
         ];
@@ -71,14 +71,14 @@ View::composer([
         $orders = [
             '' => trans($plang_admin.'.form.no-selected'),
             'id' => trans($plang_admin.'.fields.id'),
-            'perialize_name' => trans($plang_admin.'.fields.name'),
-            'perialize_status' => trans($plang_admin.'.fields.status'),
+            'sequence' => trans($plang_admin.'.fields.sequence'),
+            'serialize_name' => trans($plang_admin.'.fields.name'),
+            'serialize_status' => trans($plang_admin.'.fields.status'),
             'updated_at' => trans($plang_admin.'.fields.updated_at'),
         ];
         $sortTable = new SortTable();
         $sortTable->setOrders($orders);
         $sorting = $sortTable->linkOrders();
-
 
 
         //Order by

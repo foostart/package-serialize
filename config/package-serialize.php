@@ -3,15 +3,15 @@ return [
 
     //Number of worlds
     'length' => [
-        'perialize_name' => [
+        'serialize_name' => [
             'min' => 10,
             'max' => 255,
         ],
-        'perialize_overview' => [
+        'serialize_overview' => [
             'min' => 10,
             'max' => 255,
         ],
-        'perialize_description' => [
+        'serialize_description' => [
             'min' => 255,
             'max' => 0,//unlimit
         ],

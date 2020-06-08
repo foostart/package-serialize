@@ -1,8 +1,10 @@
 @if(!empty($items) && (!$items->isEmpty()) )
 <?php
     $withs = [
-        'order' => '10%',
+        'checkbox'=>'7%',
+        'order' => '14%',
         'name' => '40%',
+        'serial_name' => '20%',
         'status' => '10%',
         'updated_at' => '25%',
         'operations' => '15%',
@@ -12,13 +14,36 @@
     $nav = $items->toArray();
     $counter = ($nav['current_page'] - 1) * $nav['per_page'] + 1;
 ?>
-<caption>
-    @if($nav['total'] == 1)
-        {!! trans($plang_admin.'.descriptions.counter', ['number' => $nav['total']]) !!}
-    @else
-        {!! trans($plang_admin.'.descriptions.counters', ['number' => $nav['total']]) !!}
-    @endif
-</caption>
+
+<div class="caption">
+    <span>
+         @if($nav['total'] == 1)
+            {!! trans($plang_admin.'.descriptions.counter', ['number' => $nav['total']]) !!}
+        @else
+            {!! trans($plang_admin.'.descriptions.counters', ['number' => $nav['total']]) !!}
+        @endif
+    </span>
+    <div class="button-group">
+
+        {!! Form::button(trans($plang_admin.'.buttons.update-sequence'), array(
+                                                                "class"=>"btn btn-danger update-sequence",
+                                                                "title"=> trans($plang_admin.'.hint.update-sequence'),
+                                                                'id'=>'btnSaveSequence',
+
+                                                                'name'=>'update-sequence'))
+    !!}
+        {!! Form::submit(trans($plang_admin.'.buttons.delete-in-trash'), array(
+                                                                    "class"=>"btn btn-danger delete btn-delete-all del-trash",
+                                                                    "title"=> trans($plang_admin.'.hint.delete-in-trash'),
+                                                                    'name'=>'del-trash'))
+        !!}
+        {!! Form::submit(trans($plang_admin.'.buttons.delete-forever'), array(
+                                                                    "class"=>"btn btn-warning delete btn-delete-all del-forever",
+                                                                    "title"=> trans($plang_admin.'.hint.delete-forever'),
+                                                                    'name'=>'del-forever'))
+        !!}
+    </div>
+</div>
 
 <table class="table table-hover">
 
@@ -26,16 +51,30 @@
         <tr style="height: 50px;">
 
             <!--ORDER-->
-            <th style='width:{{ $withs['order'] }}'>
-                {{ trans($plang_admin.'.columns.order') }}
+            <th style='width:{{ $withs['checkbox'] }}'>
+                {{ trans($plang_admin.'.columns.id') }}
                 <span class="del-checkbox pull-right">
                     <input type="checkbox" id="selecctall" />
                     <label for="del-checkbox"></label>
                 </span>
             </th>
+            <!-- NAME -->
+            <?php $name = 'sequence' ?>
+            <th style='width:{{ $withs['order'] }}'>
+                {!! trans($plang_admin.'.columns.sequence') !!}
+                <a href='{!! $sorting["url"][$name] !!}' class='tb-id' data-order='asc'>
+                    @if($sorting['items'][$name] == 'asc')
+                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    @elseif($sorting['items'][$name] == 'desc')
+                        <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+                    @else
+                        <i class="fa fa-sort-desc" aria-hidden="true"></i>
+                    @endif
+                </a>
+            </th>
 
             <!-- NAME -->
-            <?php $name = 'perialize_name' ?>
+            <?php $name = 'serialize_name' ?>
 
             <th class="hidden-xs" style='width:{{ $withs['name'] }}'>{!! trans($plang_admin.'.columns.name') !!}
                 <a href='{!! $sorting["url"][$name] !!}' class='tb-id' data-order='asc'>
@@ -48,9 +87,23 @@
                     @endif
                 </a>
             </th>
+
+            <th class="hidden-xs" style='width:{{ $withs['serial_name'] }}'>{!! trans($plang_admin.'.columns.serial_name') !!}
+                <a href='{!! $sorting["url"][$name] !!}' class='tb-id' data-order='asc'>
+                    @if($sorting['items'][$name] == 'asc')
+                        <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    @elseif($sorting['items'][$name] == 'desc')
+                        <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
+                    @else
+                        <i class="fa fa-sort-desc" aria-hidden="true"></i>
+                    @endif
+                </a>
+            </th>
+
+
             
             <!--STATUS-->
-            <?php $name = 'perialize_status' ?>
+            <?php $name = 'serialize_status' ?>
 
             <th class="hidden-xs" style='width:{{ $withs['status'] }}'>{!! trans($plang_admin.'.columns.serialize-status') !!}
                 <a href='{!! $sorting["url"][$name] !!}' class='tb-id' data-order='asc'>
@@ -86,18 +139,8 @@
                     {{ trans($plang_admin.'.columns.operations') }}
                 </span>
 
-                {!! Form::submit(trans($plang_admin.'.buttons.delete-in-trash'), array(
-                                                                            "class"=>"btn btn-danger pull-right delete btn-delete-all del-trash",
-                                                                            "title"=> trans($plang_admin.'.hint.delete-in-trash'),
-                                                                            'name'=>'del-trash'))
-                !!}
-                {!! Form::submit(trans($plang_admin.'.buttons.delete-forever'), array(
-                                                                            "class"=>"btn btn-warning pull-right delete btn-delete-all del-forever",
-                                                                            "title"=> trans($plang_admin.'.hint.delete-forever'),
-                                                                            'name'=>'del-forever'))
-                !!}
             </th>
-            </th>
+
 
         </tr>
 
@@ -115,15 +158,24 @@
                     </span>
                 </td>
 
+                <td class="text-center">
+                    <div class='input-group'>
+                        <input type="number" size="3" id="<?php echo $item->id ?>" name="sequence[{{ $item->id}}]" data-original="{{ $item->sequence}}" class="sequence-input" value="{!!  $item->sequence !!}" style="width: 40px">
+                    </div>
+                </td>
+
+
                 <!--NAME-->
-                <td> {!! $item->perialize_name !!} </td>
+                <td> {!! $item->serialize_name !!} </td>
+                <!--NAME-->
+                <td> {!! $item->serial_name !!} </td>
                 
                 <!--STATUS-->
                 <td style="text-align: center;">
 
                     <?php $status = config('package-category.status'); ?>
-                    @if($item->perialize_status && (isset($status['list'][$item->perialize_status])))
-                        <i class="fa fa-circle" style="color:{!! $status['color'][$item->perialize_status] !!}" title='{!! $status["list"][$item->perialize_status] !!}'></i>
+                    @if($item->serialize_status && (isset($status['list'][$item->serialize_status])))
+                        <i class="fa fa-circle" style="color:{!! $status['color'][$item->serialize_status] !!}" title='{!! $status["list"][$item->serialize_status] !!}'></i>
                     @else
                     <i class="fa fa-circle-o red" title='{!! trans($plang_admin.".labels.unknown") !!}'></i>
                     @endif
@@ -137,7 +189,7 @@
                     <!--comment-->
                     @if(Route::has('comments.by_context'))
                     <a href="{!! URL::route('comments.by_context', [   'id' => $item->id,
-                                                                       'context' => 'perialize',
+                                                                       'context' => 'serialize',
                                                                        '_token' => csrf_token()
                                                             ])
                             !!}">
@@ -146,7 +198,7 @@
                     @endif
 
                     <!--edit-->
-                    <a href="{!! URL::route('perializes.edit', [   'id' => $item->id,
+                    <a href="{!! URL::route('serialize.edit', [   'id' => $item->id,
                                                                 '_token' => csrf_token()
                                                             ])
                             !!}">
@@ -155,7 +207,7 @@
 
 
                     <!--copy-->
-                    <a href="{!! URL::route('perializes.copy',[    'cid' => $item->id,
+                    <a href="{!! URL::route('serialize.copy',[    'cid' => $item->id,
                                                                 '_token' => csrf_token(),
                                                             ])
                              !!}"
@@ -166,6 +218,7 @@
                 </td>
 
             </tr>
+
         @endforeach
 
     </tbody>
@@ -183,8 +236,13 @@
     </span>
     <!--/SEARCH RESULT MESSAGE-->
 @endif
-
+<script>
+    var urlUpdateSequence = '<?= route('serialize.updatesequence') ?>';
+</script>
 @section('footer_scripts')
     @parent
     {!! HTML::script('packages/foostart/js/form-table.js')  !!}
+    {!! HTML::script('packages/foostart/package-serialize/js/serialize-scripts.js')  !!}
+    {!! HTML::style('packages/foostart/package-serialize/css/serialize-styles.css')  !!}
 @stop
+

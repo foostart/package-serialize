@@ -20,7 +20,7 @@ use Foostart\Serialize\Models\Serialize;
 use Foostart\Category\Models\Category;
 use Foostart\Slideshow\Models\Slideshow;
 use Foostart\Serialize\Validators\SerializeValidator;
-
+use Illuminate\Support\Facades\DB;
 
 class SerializeAdminController extends FooController {
 
@@ -28,6 +28,7 @@ class SerializeAdminController extends FooController {
     public $obj_category = NULL;
     public $context = NULL;
     public $categories = NULL;
+    public $serials = NULL;
     public $slideshow = NULL;
 
 
@@ -49,10 +50,10 @@ class SerializeAdminController extends FooController {
 
         //package name
         $this->package_name = 'package-serialize';
-        $this->package_base_name = 'perialize';
+        $this->package_base_name = 'serialize';
 
         //root routers
-        $this->root_router = 'perializes';
+        $this->root_router = 'serialize';
 
         //page views
         $this->page_views = [
@@ -68,7 +69,7 @@ class SerializeAdminController extends FooController {
         $this->data_view['status'] = $this->obj_item->getPluckStatus();
 
         //set category context
-        $this->category_ref_name = 'admin/perializes';
+        $this->category_ref_name = 'admin/serialize';
 
         //get list of categories
         $this->context = $this->obj_item->getContext($this->category_ref_name);
@@ -79,15 +80,28 @@ class SerializeAdminController extends FooController {
             $this->categories = $this->obj_category->pluckSelect($_params);
         }
         $this->data_view['categories'] = $this->categories;
+
+
         $this->data_view['context'] = $this->context;
         $this->data_view['slideshow'] = $this->obj_slideshow->pluckSelect();
+
+        //get list of categories
+        $this->serial_ref_name = 'admin/serial_topic';
+        $this->context = $this->obj_item->getContext($this->serial_ref_name);
+        if ($this->context) {
+            $_params = [
+                'context_id' => $this->context->context_id
+            ];
+            $this->serials = $this->obj_category->pluckSelect($_params);
+        }
+        $this->data_view['serials'] = $this->serials;
 
 
         /**
          * Breadcrumb
          */
         $this->breadcrumb_1['label'] = 'Admin';
-        $this->breadcrumb_2['label'] = 'Rules';
+        $this->breadcrumb_2['label'] = 'Serialize';
 
     }
 
@@ -118,7 +132,7 @@ class SerializeAdminController extends FooController {
 
         } else if (empty($params['user_id']) || ($params['user_id'] != $user['user_id'])) {
 
-            return redirect()->route('perializes.list', ['user_id' => $user['user_id']]);
+            return redirect()->route('serialize.list', ['user_id' => $user['user_id']]);
 
         }
 
@@ -135,6 +149,7 @@ class SerializeAdminController extends FooController {
             'is_admin' => $is_admin,
             'user_id' => $user['user_id'],
         ));
+
 
         return view($this->page_views['admin']['items'], $this->data_view);
     }
@@ -199,11 +214,12 @@ class SerializeAdminController extends FooController {
      * @return view edit page
      * @date 27/12/2017
      */
-    public function perialize(Request $request) {
+    public function post(Request $request) {
 
         $item = NULL;
 
         $params = array_merge($request->all(), $this->getUser());
+
 
         $is_valid_request = $this->isValidRequest($request);
 
@@ -257,6 +273,51 @@ class SerializeAdminController extends FooController {
             return Redirect::route($this->root_router.'.edit', $id ? ["id" => $id]: [])
                     ->withInput()->withErrors($errors);
         }
+    }
+
+    /**
+     * Processing data for update Sequence
+     * @return  redirect
+     * @date 2020-06-08
+     */
+    public function updateSequence(Request $request) {
+
+        $item = NULL;
+
+        $params = array_merge($request->all(), $this->getUser());
+
+
+        $is_valid_request = $this->isValidRequest($request);
+
+        $sequences = $request->get('sequence');
+
+
+        try{
+
+            if (!$is_valid_request || !$sequences) {
+                throw new  \Exception('Data invalid');
+            }
+
+            DB::beginTransaction();
+            foreach ($sequences as $id=>$sequence){
+                $this->obj_item->updateSequence($id, $sequence);
+            }
+
+            DB::commit();
+            return Redirect::route($this->root_router.'.list')
+                ->withMessage(trans($this->plang_admin.'.actions.update-sequence-ok'));
+        }
+        catch (\Exception $e){
+            DB::rollBack();
+
+            // handle save log
+            Log::error($e->getMessage());
+
+            return Redirect::route($this->root_router.'.list')
+                ->withMessage(trans($this->plang_admin.'.actions.update-sequence-error'));
+
+        }
+
     }
 
     /**

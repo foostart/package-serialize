@@ -47,8 +47,10 @@ return [
     |
     */
     'columns' => [
-        'order' => '#',
-        'name' => 'Serialize name',
+        'id' => '#',
+        'sequence' => 'Sequence',
+        'name' => 'Title',
+        'serial_name' => 'Serial name',
         'operations' => 'Operations',
         'updated_at' => 'Updated at',
         'filename' => 'File name',
@@ -64,11 +66,11 @@ return [
     |
     */
     'pages' => [
-        'title-list' => 'List of perializes',
+        'title-list' => 'List of serializes',
         'title-list-search' => 'Search results',
-        'title-edit' => 'Edit perialize',
-        'title-add' => 'Add new perialize',
-        'title-delete' => 'Delete perialize',
+        'title-edit' => 'Edit serialize',
+        'title-add' => 'Add new serialize',
+        'title-delete' => 'Delete serialize',
         'title-config' => 'Current configurations',
         'title-lang' => 'Manage list of languages',
     ],
@@ -92,6 +94,7 @@ return [
         'delete' => 'Delete',
         'delete-in-trash' => 'In trash',
         'delete-forever' => 'Forever',
+        'update-sequence' =>'Update sequence'
     ],
 
 
@@ -108,6 +111,7 @@ return [
     'hint'  => [
         'delete-forever' => 'Delete forever',
         'delete-in-trash' => 'Delete in trash',
+        'update-sequence'=>'Button for save sequence'
     ],
 
 
@@ -141,7 +145,7 @@ return [
     */
     'descriptions' => [
         'form' => 'Serialize form',
-        'update' => 'Update perialize',
+        'update' => 'Update serialize',
         'name' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         'slug' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.',
         'category' => 'Click <a href=":href">here</a> to manage list of categories by token.',
@@ -190,6 +194,7 @@ return [
     */
     'fields' => [
         'id' => 'Serialize ID',
+        'sequence' => 'Sequence',
         'name' => 'Serialize name',
         'description' => 'Serialize Description',
         'overview' => 'Serialize Overview',
@@ -218,7 +223,7 @@ return [
         'files' => 'Serialize files',
         'category' => 'Category name',
         'slideshow' => 'Slideshow name',
-        'title-search' => 'Search perialize',
+        'title-search' => 'Search serialize',
         'title-backup' => 'Backups',
         'config' => 'Configurations',
         'keyword' => 'Keyword',
@@ -226,6 +231,8 @@ return [
         'no-selected' => 'No selected',
         'status' => 'Status',
         'delete' => 'Delete',
+        'serial' => 'Serial name',
+        'sequence' => 'Sequence',
     ],
 
 
@@ -272,8 +279,8 @@ return [
     |
     */
     'headings' => [
-        'form-search' => 'Search perializes',
-        'list' => 'List of perializes',
+        'form-search' => 'Search serializes',
+        'list' => 'List of serializes',
         'search' => 'Search results',
     ],
 
@@ -314,5 +321,7 @@ return [
         'edit-error' => 'Edit item failed',
         'delete-ok' => 'Delete item successfully',
         'delete-error' => 'Delete item failed',
+        'update-sequence-ok' => 'Update sequence successfully',
+        'update-sequence-error'=>'Update sequence error',
     ],
 ];

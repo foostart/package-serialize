@@ -2,11 +2,12 @@
 
 use Illuminate\Session\TokenMismatchException;
 
+
 /**
  * FRONT
  */
-Route::get('perialize', [
-    'as' => 'perialize',
+Route::get('serialize', [
+    'as' => 'serialize',
     'uses' => 'Foostart\Serialize\Controllers\Front\SerializeFrontController@index'
 ]);
 
@@ -22,12 +23,12 @@ Route::group(['middleware' => ['web']], function () {
 
         /*
           |-----------------------------------------------------------------------
-          | Manage perialize
+          | Manage serialize
           |-----------------------------------------------------------------------
-          | 1. List of perializes
-          | 2. Edit perialize
-          | 3. Delete perialize
-          | 4. Add new perialize
+          | 1. List of serialize
+          | 2. Edit serialize
+          | 3. Delete serialize
+          | 4. Add new serialize
           | 5. Manage configurations
           | 6. Manage languages
           |
@@ -36,75 +37,83 @@ Route::group(['middleware' => ['web']], function () {
         /**
          * list
          */
-        Route::get('admin/perializes', [
-            'as' => 'perializes.list',
+        Route::get('admin/serialize', [
+            'as' => 'serialize.list',
             'uses' => 'SerializeAdminController@index'
         ]);
 
         /**
          * edit-add
          */
-        Route::get('admin/perializes/edit', [
-            'as' => 'perializes.edit',
+        Route::get('admin/serialize/edit', [
+            'as' => 'serialize.edit',
             'uses' => 'SerializeAdminController@edit'
         ]);
 
         /**
          * copy
          */
-        Route::get('admin/perializes/copy', [
-            'as' => 'perializes.copy',
+        Route::get('admin/serialize/copy', [
+            'as' => 'serialize.copy',
             'uses' => 'SerializeAdminController@copy'
         ]);
 
         /**
-         * perialize
+         * serialize
          */
-        Route::perialize('admin/perializes/edit', [
-            'as' => 'perializes.perialize',
-            'uses' => 'SerializeAdminController@perialize'
+        Route::post('admin/serialize/edit', [
+            'as' => 'serialize.post',
+            'uses' => 'SerializeAdminController@post'
         ]);
 
         /**
          * delete
          */
-        Route::get('admin/perializes/delete', [
-            'as' => 'perializes.delete',
+        Route::get('admin/serialize/delete', [
+            'as' => 'serialize.delete',
             'uses' => 'SerializeAdminController@delete'
         ]);
 
         /**
          * trash
          */
-         Route::get('admin/perializes/trash', [
-            'as' => 'perializes.trash',
+         Route::get('admin/serialize/trash', [
+            'as' => 'serialize.trash',
             'uses' => 'SerializeAdminController@trash'
         ]);
 
         /**
          * configs
         */
-        Route::get('admin/perializes/config', [
-            'as' => 'perializes.config',
+        Route::get('admin/serialize/config', [
+            'as' => 'serialize.config',
             'uses' => 'SerializeAdminController@config'
         ]);
 
-        Route::perialize('admin/perializes/config', [
-            'as' => 'perializes.config',
+        Route::post('admin/serialize/config', [
+            'as' => 'serialize.config',
             'uses' => 'SerializeAdminController@config'
         ]);
 
         /**
          * language
         */
-        Route::get('admin/perializes/lang', [
-            'as' => 'perializes.lang',
+        Route::get('admin/serialize/lang', [
+            'as' => 'serialize.lang',
             'uses' => 'SerializeAdminController@lang'
         ]);
 
-        Route::perialize('admin/perializes/lang', [
-            'as' => 'perializes.lang',
+        Route::post('admin/serialize/lang', [
+            'as' => 'serialize.lang',
             'uses' => 'SerializeAdminController@lang'
+        ]);
+
+        /**
+         * edit-add
+         */
+        Route::post('admin/serialize/updatesequence', [
+            'as' => 'serialize.updatesequence',
+            'uses' => 'SerializeAdminController@updateSequence'
         ]);
 
     });

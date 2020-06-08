@@ -46,7 +46,7 @@
 
                     <!--BODY-->
                     <div class="panel-body">
-                        {!! Form::open(['route'=>['perializes.config'], 'method' => 'perialize'])  !!}
+                        {!! Form::open(['route'=>['serialize.config'], 'method' => 'serialize'])  !!}
 
                             <div class='btn-form'>
 

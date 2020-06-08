@@ -8,3 +8,26 @@ and open the template in the editor.
     Author     : thanh_nhuan
 */
 
+.update-sequence{
+    font-size: 12px;
+    padding: 5px;
+    display: none;
+}
+
+
+
+.del-trash,.del-forever{
+    position: relative !important;
+    top:0;
+    right: 0;
+}
+
+.caption{
+    height: 30px;
+}
+
+.button-group{
+    position: relative;
+    float: right;
+
+}

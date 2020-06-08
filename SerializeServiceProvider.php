@@ -33,7 +33,7 @@ class SerializeServiceProvider extends ServiceProvider {
         $this->publishLang();
 
         // publish views
-        //$this->publishViews();
+        $this->publishViews();
 
         // publish assets
         $this->publishAssets();
@@ -66,6 +66,7 @@ class SerializeServiceProvider extends ServiceProvider {
      * @destination: resources/lang
      */
     protected function publishLang() {
+
         $this->publishes([
             __DIR__ . '/lang' => base_path('resources/lang'),
         ]);
@@ -75,6 +76,7 @@ class SerializeServiceProvider extends ServiceProvider {
      * Public view to system
      * @source: vendor/foostart/package-serialize/Views
      * @destination: resources/views/vendor/package-serialize
+     * @a
      */
     protected function publishViews() {
 

@@ -1,7 +1,7 @@
 <!--
 | @TITLE
-| Update existing perialize
-| Add new perialize
+| Update existing serialize
+| Add new serialize
 |
 |-------------------------------------------------------------------------------
 | @REQUIRED

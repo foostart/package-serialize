@@ -16,9 +16,9 @@ class SerializeValidator extends FooValidator
     {
         // add rules
         self::$rules = [
-            'perialize_name' => ["required"],
-            'perialize_overview' => ["required"],
-            'perialize_description' => ["required"],
+            'serialize_name' => ["required"],
+            'serialize_overview' => ["required"],
+            'serialize_description' => ["required"],
         ];
 
         // set configs
@@ -35,9 +35,9 @@ class SerializeValidator extends FooValidator
         Event::listen('validating', function($input)
         {
             self::$messages = [
-                'perialize_name.required'          => trans($this->lang_admin.'.errors.required', ['attribute' => trans($this->lang_admin.'.fields.name')]),
-                'perialize_overview.required'      => trans($this->lang_admin.'.errors.required', ['attribute' => trans($this->lang_admin.'.fields.overview')]),
-                'perialize_description.required'   => trans($this->lang_admin.'.errors.required', ['attribute' => trans($this->lang_admin.'.fields.description')]),
+                'serialize_name.required'          => trans($this->lang_admin.'.errors.required', ['attribute' => trans($this->lang_admin.'.fields.name')]),
+                'serialize_overview.required'      => trans($this->lang_admin.'.errors.required', ['attribute' => trans($this->lang_admin.'.fields.overview')]),
+                'serialize_description.required'   => trans($this->lang_admin.'.errors.required', ['attribute' => trans($this->lang_admin.'.fields.description')]),
             ];
         });
 
@@ -59,28 +59,28 @@ class SerializeValidator extends FooValidator
 
         $params = [
             'name' => [
-                'key' => 'perialize_name',
+                'key' => 'serialize_name',
                 'label' => trans($this->lang_admin.'.fields.name'),
-                'min' => $_ln['perialize_name']['min'],
-                'max' => $_ln['perialize_name']['max'],
+                'min' => $_ln['serialize_name']['min'],
+                'max' => $_ln['serialize_name']['max'],
             ],
             'overview' => [
-                'key' => 'perialize_overview',
+                'key' => 'serialize_overview',
                 'label' => trans($this->lang_admin.'.fields.overview'),
-                'min' => $_ln['perialize_overview']['min'],
-                'max' => $_ln['perialize_overview']['max'],
+                'min' => $_ln['serialize_overview']['min'],
+                'max' => $_ln['serialize_overview']['max'],
             ],
             'description' => [
-                'key' => 'perialize_description',
+                'key' => 'serialize_description',
                 'label' => trans($this->lang_admin.'.fields.description'),
-                'min' => $_ln['perialize_description']['min'],
-                'max' => $_ln['perialize_description']['max'],
+                'min' => $_ln['serialize_description']['min'],
+                'max' => $_ln['serialize_description']['max'],
             ],
         ];
 
-        $flag = $this->isValidLength($input['perialize_name'], $params['name']) ? $flag : FALSE;
-        $flag = $this->isValidLength($input['perialize_overview'], $params['overview']) ? $flag : FALSE;
-        $flag = $this->isValidLength($input['perialize_description'], $params['description']) ? $flag : FALSE;
+        $flag = $this->isValidLength($input['serialize_name'], $params['name']) ? $flag : FALSE;
+        $flag = $this->isValidLength($input['serialize_overview'], $params['overview']) ? $flag : FALSE;
+        $flag = $this->isValidLength($input['serialize_description'], $params['description']) ? $flag : FALSE;
 
         return $flag;
     }

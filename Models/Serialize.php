@@ -22,36 +22,41 @@ class Serialize extends FooModel {
     public function setConfigs() {
 
         //table name
-        $this->table = 'perializes';
+        $this->table = 'serializes';
 
         //list of field in table
         $this->fillable = [
-            'perialize_name',
-            'perialize_slug',
+            'serialize_name',
+            'serialize_slug',
             'category_id',
+            'serial_topic_id',
             'slideshow_id',
             'user_id',
             'user_full_name',
             'user_email',
-            'perialize_overview',
-            'perialize_description',
-            'perialize_image',
-            'perialize_files',
-            'perialize_status',
+            'serialize_overview',
+            'serialize_description',
+            'serialize_image',
+            'serialize_files',
+            'serialize_status',
         ];
 
         //list of fields for inserting
         $this->fields = [
-            'perialize_name' => [
-                'name' => 'perialize_name',
+            'serialize_name' => [
+                'name' => 'serialize_name',
                 'type' => 'Text',
             ],
-            'perialize_slug' => [
-                'name' => 'perialize_slug',
+            'serialize_slug' => [
+                'name' => 'serialize_slug',
                 'type' => 'Text',
             ],
             'category_id' => [
                 'name' => 'category_id',
+                'type' => 'Int',
+            ],
+            'serial_topic_id' => [
+                'name' => 'serial_topic_id',
                 'type' => 'Int',
             ],
             'slideshow_id' => [
@@ -70,23 +75,23 @@ class Serialize extends FooModel {
                 'name' => 'email',
                 'type' => 'Text',
             ],
-            'perialize_overview' => [
-                'name' => 'perialize_overview',
+            'serialize_overview' => [
+                'name' => 'serialize_overview',
                 'type' => 'Text',
             ],
-            'perialize_description' => [
-                'name' => 'perialize_description',
+            'serialize_description' => [
+                'name' => 'serialize_description',
                 'type' => 'Text',
             ],
-            'perialize_image' => [
-                'name' => 'perialize_image',
+            'serialize_image' => [
+                'name' => 'serialize_image',
                 'type' => 'Text',
             ],
-            'perialize_files' => [
+            'serialize_files' => [
                 'name' => 'files',
                 'type' => 'Json',
             ],
-            'perialize_status' => [
+            'serialize_status' => [
                 'name' => 'status',
                 'type' => 'Int',
             ],
@@ -94,23 +99,25 @@ class Serialize extends FooModel {
 
         //check valid fields for inserting
         $this->valid_insert_fields = [
-            'perialize_name',
-            'perialize_slug',
+            'serialize_name',
+            'serialize_slug',
             'user_id',
             'category_id',
+            'serial_topic_id',
             'slideshow_id',
             'user_full_name',
             'updated_at',
-            'perialize_overview',
-            'perialize_description',
-            'perialize_image',
-            'perialize_files',
-            'perialize_status',
+            'serialize_overview',
+            'serialize_description',
+            'serialize_image',
+            'serialize_files',
+            'serialize_status',
         ];
 
         //check valid fields for ordering
         $this->valid_ordering_fields = [
-            'perialize_name',
+            'sequence',
+            'serialize_name',
             'updated_at',
             $this->field_status,
         ];
@@ -121,21 +128,24 @@ class Serialize extends FooModel {
             'category',
             '_id',
             'limit',
-            'perialize_id!',
+            'serialize_id!',
             'category_id',
+            'serial_topic_id',
+            'serial_topic',
             'user_id',
         ];
 
         //primary key
-        $this->primaryKey = 'perialize_id';
+        $this->primaryKey = 'serialize_id';
 
         //the number of items on page
         $this->perPage = 10;
 
         //item status
-        $this->field_status = 'perialize_status';
+        $this->field_status = 'serialize_status';
 
     }
+
 
     /**
      * Gest list of items
@@ -153,6 +163,7 @@ class Serialize extends FooModel {
         //select fields
         $elo = $this->createSelect($elo);
 
+
         //order filters
         $elo = $this->orderingFilters($params, $elo);
 
@@ -167,9 +178,9 @@ class Serialize extends FooModel {
     }
 
     /**
-     * Get a perialize by {id}
+     * Get a serialize by {id}
      * @param ARRAY $params list of parameters
-     * @return OBJECT perialize
+     * @return OBJECT serialize
      */
     public function selectItem($params = array(), $key = NULL) {
 
@@ -196,18 +207,18 @@ class Serialize extends FooModel {
     }
 
 
-    public function getComments($perialize_id) {
+    public function getComments($serialize_id) {
 
-        // Get perialize
+        // Get serialize
         $params = array(
-            'id' => $perialize_id,
+            'id' => $serialize_id,
         );
-        $perialize = $this->selectItem($params);
+        $serialize = $this->selectItem($params);
 
         // Get comment by context
         $params = array(
-            'context_name' => 'perialize',
-            'context_id' => $perialize_id,
+            'context_name' => 'serialize',
+            'context_id' => $serialize_id,
             'by_status' => true,
         );
         $obj_comment = new Comment();
@@ -228,7 +239,9 @@ class Serialize extends FooModel {
      * @return ELOQUENT OBJECT
      */
     protected function joinTable(array $params = []){
-        return $this;
+        $instance = $this->from($this->table);
+        $instance = $this->join('categories','categories.category_id','=','serializes.serial_topic_id','left');
+        return $instance;
     }
 
     /**
@@ -241,8 +254,11 @@ class Serialize extends FooModel {
         //filter
         if ($this->isValidFilters($params) && (!empty($params)))
         {
+
             foreach($params as $column => $value)
             {
+
+
                 if($this->isValidValue($value))
                 {
                     switch($column)
@@ -255,6 +271,11 @@ class Serialize extends FooModel {
                         case 'category':
                             if (!empty($value)) {
                                 $elo = $elo->where($this->table . '.category_id', '=', $value);
+                            }
+                            break;
+                        case 'serial_topic':
+                            if (!empty($value)) {
+                                $elo = $elo->where($this->table . '.serial_topic_id', '=', $value);
                             }
                             break;
                         case 'user_id':
@@ -270,7 +291,7 @@ class Serialize extends FooModel {
                             break;
                         case '_id':
                             if (!empty($value)) {
-                                $elo = $elo->where($this->table . '.perialize_id', '!=', $value);
+                                $elo = $elo->where($this->table . '.serialize_id', '!=', $value);
                             }
                             break;
                         case 'status':
@@ -281,9 +302,9 @@ class Serialize extends FooModel {
                         case 'keyword':
                             if (!empty($value)) {
                                 $elo = $elo->where(function($elo) use ($value) {
-                                    $elo->where($this->table . '.perialize_name', 'LIKE', "%{$value}%")
-                                    ->orWhere($this->table . '.perialize_description','LIKE', "%{$value}%")
-                                    ->orWhere($this->table . '.perialize_overview','LIKE', "%{$value}%");
+                                    $elo->where($this->table . '.serialize_name', 'LIKE', "%{$value}%")
+                                    ->orWhere($this->table . '.serialize_description','LIKE', "%{$value}%")
+                                    ->orWhere($this->table . '.serialize_overview','LIKE', "%{$value}%");
                                 });
                             }
                             break;
@@ -309,7 +330,8 @@ class Serialize extends FooModel {
     public function createSelect($elo) {
 
         $elo = $elo->select($this->table . '.*',
-                            $this->table . '.perialize_id as id'
+                            $this->table . '.serialize_id as id',
+                            'categories.category_name as serial_name'
                 );
 
         return $elo;
@@ -339,13 +361,14 @@ class Serialize extends FooModel {
         }
         $field_status = $this->field_status;
 
-        //get perialize item by conditions
+        //get serialize item by conditions
         $_params = [
             'id' => $id,
         ];
-        $perialize = $this->selectItem($_params);
+        $serialize = $this->selectItem($_params);
 
-        if (!empty($perialize)) {
+
+        if (!empty($serialize)) {
             $dataFields = $this->getDataFields($params, $this->fields);
 
             foreach ($dataFields as $key => $value) {
@@ -354,17 +377,45 @@ class Serialize extends FooModel {
 
             $serialize->save();
 
-            return $perialize;
+            return $serialize;
         } else {
             return NULL;
         }
+    }
+
+    /**
+     *
+     * @param ARRAY $params list of parameters
+     * @param INT $id is primary key
+     * @return boolan|Throwable
+     */
+    public function updateSequence( $id,$sequence) {
+
+        if (empty($id) || empty($sequence)) {
+            throw new \Exception('Id and sequence can not empty');
+        }
+
+        $field_status = $this->field_status;
+
+        $item = $this->selectItem(['id'=>$id]);
+
+        if(!$item){
+            throw new \Exception('Item  id = "'.$id.'" dont exists');
+        }
+
+        $item->sequence = $sequence;
+        if(!$item->save()){
+            throw new \Exception('Can not save sequence for id = '.$id);
+        }
+
+        return true;
     }
 
 
     /**
      *
      * @param ARRAY $params list of parameters
-     * @return OBJECT perialize
+     * @return OBJECT serialize
      */
     public function insertItem($params = []) {
 

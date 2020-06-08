@@ -1,14 +1,14 @@
 <!------------------------------------------------------------------------------
-| List of elements in perialize form
+| List of elements in serialize form
 |------------------------------------------------------------------------------->
 
-{!! Form::open(['route'=>['perializes.perialize', 'id' => @$item->id],  'files'=>true, 'method' => 'perialize'])  !!}
+{!! Form::open(['route'=>['serialize.post', 'id' => @$item->id],  'files'=>true, 'method' => 'serialize'])  !!}
 
     <!--BUTTONS-->
     <div class='btn-form'>
         <!-- DELETE BUTTON -->
         @if($item)
-            <a href="{!! URL::route('perializes.delete',['id' => @$item->id, '_token' => csrf_token()]) !!}"
+            <a onclick="return confirm('Do you sure to delete ?')" href="{!! URL::route('serialize.delete',['id' => @$item->id, '_token' => csrf_token()]) !!}"
             class="btn btn-danger pull-right margin-left-5 delete">
                 {!! trans($plang_admin.'.buttons.delete') !!}
             </a>
@@ -54,10 +54,10 @@
 
             <!--POST NAME-->
             @include('package-category::admin.partials.input_text', [
-                'name' => 'perialize_name',
-                'id' => 'perialize_name',
+                'name' => 'serialize_name',
+                'id' => 'serialize_name',
                 'label' => trans($plang_admin.'.labels.name'),
-                'value' => @$item->perialize_name,
+                'value' => @$item->serialize_name,
                 'description' => trans($plang_admin.'.descriptions.name'),
                 'errors' => $errors,
             ])
@@ -65,11 +65,11 @@
 
             <!--POST SLUG-->
             @include('package-category::admin.partials.input_slug', [
-                'name' => 'perialize_slug',
-                'id' => 'perialize_slug',
-                'ref' => 'perialize_name',
+                'name' => 'serialize_slug',
+                'id' => 'serialize_slug',
+                'ref' => 'serialize_name',
                 'label' => trans($plang_admin.'.labels.slug'),
-                'value' => @$item->perialize_slug,
+                'value' => @$item->serialize_slug,
                 'description' => trans($plang_admin.'.descriptions.slug'),
                 'errors' => $errors,
             ])
@@ -92,6 +92,21 @@
                     ])
 
                </div>
+                <div class='col-md-6'>
+
+                    <!-- LIST OF CATEGORIES -->
+                    @include('package-category::admin.partials.select_single', [
+                        'name' => 'serial_topic_id',
+                        'label' => trans($plang_admin.'.labels.serial'),
+                        'items' => $serials,
+                        'value' => @$item->serial_topic_id,
+                        'description' => trans($plang_admin.'.descriptions.category', [
+                                     'href' => URL::route('categories.list', ['_key' => $context->context_key])
+                                     ]),
+                        'errors' => $errors,
+                    ])
+
+                </div>
 
                 <div class='col-md-6'>
 
@@ -114,19 +129,55 @@
                     @include('package-category::admin.partials.select_single', [
                         'name' => 'status',
                         'label' => trans($plang_admin.'.form.status'),
-                        'value' => @$item->perialize_status,
+                        'value' => @$item->serialize_status,
                         'items' => $status,
                         'description' => trans($plang_admin.'.descriptions.status'),
                     ])
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+
+                    <?php
+                            $name = 'sequence';
+                    ?>
+                        <!--element-->
+                    {!! Form::label($name, trans($plang_admin.'.labels.sequence')) !!}
+                    {!! Form::number($name, @$item->sequence, [ 'class' => 'form-control']) !!}
+
+                    <!--description-->
+                        @if(trans($plang_admin.'.sequence.name'))
+                            <span class='input-text-description'>
+                                <blockquote class="quote-card">
+                                    <p>{!! trans($plang_admin.'.sequence.name') !!}</p>
+                                </blockquote>
+                            </span>
+                            @endif
+
+                        <!--errors-->
+                            @if ($errors->has($name))
+                                <ul class='alert alert-danger error-item'>
+                                    @foreach($errors->get($name) as $error)
+                                        @if($error)
+                                            <li>
+                                                <span class='input-text-error'>{!! $error !!}</span>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            @endif
+                    </div>
+                <!--/Sequence-->
+
                 </div>
 
             </div>
 
             <!--POST DESCRIPTION-->
             @include('package-category::admin.partials.textarea', [
-                'name' => 'perialize_description',
+                'name' => 'serialize_description',
                 'label' => trans($plang_admin.'.labels.description'),
-                'value' => @$item->perialize_description,
+                'value' => @$item->serialize_description,
                 'description' => trans($plang_admin.'.descriptions.description'),
                 'rows' => 70,
                 'tinymce' => true,
@@ -140,9 +191,9 @@
         <div id="menu_2" class="tab-pane fade">
             <!--POST OVERVIEW-->
             @include('package-category::admin.partials.textarea', [
-            'name' => 'perialize_overview',
+            'name' => 'serialize_overview',
             'label' => trans($plang_admin.'.labels.overview'),
-            'value' => @$item->perialize_overview,
+            'value' => @$item->serialize_overview,
             'description' => trans($plang_admin.'.descriptions.overview'),
             'tinymce' => false,
             'errors' => $errors,
@@ -155,9 +206,9 @@
         <div id="menu_3" class="tab-pane fade">
             <!--POST IMAGE-->
             @include('package-category::admin.partials.input_image', [
-            'name' => 'perialize_image',
+            'name' => 'serialize_image',
             'label' => trans($plang_admin.'.labels.image'),
-            'value' => @$item->perialize_image,
+            'value' => @$item->serialize_image,
             'description' => trans($plang_admin.'.descriptions.image'),
             'errors' => $errors,
             ])
@@ -167,7 +218,7 @@
             @include('package-category::admin.partials.input_files', [
                 'name' => 'files',
                 'label' => trans($plang_admin.'.labels.files'),
-                'value' => @$item->perialize_files,
+                'value' => @$item->serialize_files,
                 'description' => trans($plang_admin.'.descriptions.files'),
                 'errors' => $errors,
             ])
@@ -186,5 +237,5 @@
 
 {!! Form::close() !!}
 <!------------------------------------------------------------------------------
-| End list of elements in perialize form
+| End list of elements in serialize form
 |------------------------------------------------------------------------------>

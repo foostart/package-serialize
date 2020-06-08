@@ -1,9 +1,9 @@
 {
     "name": "foostart/package-serialize",
-    "description": "Manage perialize",
+    "description": "Manage serialize",
     "keywords": [
         "foostart",
-        "laravel 5 package perialize"
+        "laravel 5 package serialize"
     ],
     "authors": [
         {

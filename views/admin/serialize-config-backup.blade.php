@@ -36,7 +36,7 @@
 
                     <!--NAME-->
                     <td>
-                        <a href="{!! URL::route('perializes.config', ['v' => base64_encode($backup)]) !!}">
+                        <a href="{!! URL::route('serialize.config', ['v' => base64_encode($backup)]) !!}">
                             {!! basename($backup) !!}
                         </a>
                     </td>
